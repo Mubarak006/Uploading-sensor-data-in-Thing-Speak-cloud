@@ -72,9 +72,76 @@ Automatically act on your data and communicate using third-party services like T
 
 # PROGRAM:
 
+```
+#include "ThingSpeak.h"
+#include <WiFi.h>
+#include "DHT.h"
+
+char ssid[] = "VIVO Y58 5G"; 
+char pass[] = "MUBARAKR123";
+WiFiClient client;
+
+const int out = 2; 
+float temperature = 0;
+float humidity = 0;
+DHT dht(out, DHT11);
+
+unsigned long myChannelField = 3303309; 
+const int TemperatureField = 1;          
+const int HumidityField = 2;
+const char* myWriteAPIKey = "TS8S8WNT5ZV2XKP6"; 
+
+void setup() {
+  Serial.begin(115200);
+  ThingSpeak.begin(client);
+  dht.begin();
+  pinMode(out, INPUT); 
+ }
+
+void loop() 
+{
+ if (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.print("Attempting to connect to SSID: ");
+    Serial.println(ssid);
+    while (WiFi.status() != WL_CONNECTED)
+    {
+      WiFi.begin(ssid, pass);
+      Serial.print(".");
+      delay(5000);
+    }
+    Serial.println("\nConnected.");
+  }
+ 
+
+  float temperature = dht.readTemperature();
+  float humidity = dht.readHumidity();
+  
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.println(" °C");
+
+  Serial.print("Humidity ");
+  Serial.print(humidity);
+  Serial.println(" g.m-3");
+
+ThingSpeak.setField(TemperatureField, temperature);
+ThingSpeak.setField(HumidityField, humidity);
+ThingSpeak.writeFields(myChannelField,myWriteAPIKey);
+delay(5000);
+}
+
+```
 # CIRCUIT DIAGRAM:
 
+![WhatsApp Image 2026-03-17 at 2 19 14 PM](https://github.com/user-attachments/assets/ec415551-edbb-4981-ac86-e7e58774de67)
+
+
 # OUTPUT:
+
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/3f934fcd-7f76-4c50-a752-d63183797050" />
+
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/27f760ce-1abb-4d63-8456-2aa7d4dc0c48" />
 
 # RESULT:
 
