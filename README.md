@@ -1,5 +1,8 @@
 # Uploading temperature sensor data in Thing Speak cloud
 
+## NAME: MUBARAK R
+## REG NO: 212224220066
+
 # AIM:
 To monitor the temperature sensor data in the Thing speak using an ESP32 controller.
 
